@@ -1,6 +1,6 @@
 <template>
   <div class="root">
-    <p v-on:click="add">{{test}}</p>
+    <h1>做单记录</h1>
     <div class="mission">
       <Mission v-bind:test="test"></Mission>
     </div>
@@ -16,16 +16,18 @@ export default {
   },
   data: function () {
     return {
-      test: 'test'
+      
     }
   },
   methods: {
-    add: function () {
-      let theNum = this.test + '1';
-      this.test = theNum;
-    }
   }
 }
 
 </script>
+<<style>
+h1{
+  text-align: center;
+}
+</style>
+
 

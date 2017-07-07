@@ -6,10 +6,15 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "mock": "json-server --watch mock/faker-data.js --m mock/post-to-get.js",
+    "mockdev": "npm run mock & npm run dev"
   },
   "dependencies": {
-    "vue": "^2.3.3"
+    "axios": "^0.16.2",
+    "faker": "^4.1.0",
+    "vue": "^2.3.3",
+    "vue-router": "^2.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
