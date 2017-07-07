@@ -2,7 +2,7 @@
   <div class="root">
     <h1>做单记录</h1>
     <div class="mission">
-      <Mission v-bind:test="test"></Mission>
+      <Mission></Mission>
     </div>
   </div>
 </template>

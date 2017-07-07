@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tbody is="MissionList" v-for="(item,index) in table" v-bind:key="item.id" v-bind:item="item" v-bind:index="index"></tbody>  
+            <tbody is="MissionList" v-for="(item,index) in table" v-bind:key="item.id" v-bind:item="item" v-bind:index="index" v-on:delEmit="del(index)"></tbody>  
         </tbody>
     </table>
 </div>
@@ -40,6 +40,12 @@ export default {
         MissionList
     },
     methods: {
+        del:function(arg) {
+            let theIndex = arg;
+            let newTable = this.table;
+            newTable.splice(theIndex,1);
+            this.table = newTable;
+        }
     },
     beforeCreate:function() {
         axios.get('http://localhost:3000/people').then((res) => {
