@@ -10,7 +10,7 @@ const routes = [{
   path: '/',
   component: Mission
 },{
-  path: '/detail?id=:num',
+  path: '/detail',
   component: MissionDetail
 }];
 
