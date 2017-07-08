@@ -15,7 +15,8 @@
         <td>{{item.uploadtest}}</td>
         <td>{{item.upload}}</td>
         <td v-on:click="option">
-            <span ref="item.id" class="details">详细</span>
+            <!--<span ref="item.id" class="details">详细</span>-->
+            <router-link v-bind:to="{ path: '/detail',query:{id: item.id}}">详细</router-link>
             <span ref="item.id" class="edit">修改</span>
             <span ref="item.id" class="del">删除</span>
         </td>
@@ -48,6 +49,9 @@ export default {
           }
           if(event.target.className == 'del') {
               this.delEmitter();
+          }
+          if(event.target.className == 'details') {
+              router.push({ path: 'detail',params: {id: this.myitem.id}});
           }
       },
       delEmitter: function () {
