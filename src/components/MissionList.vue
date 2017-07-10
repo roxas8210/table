@@ -4,21 +4,48 @@
             <span v-if="!showInput">
                 {{item.companyName}}
             </span>
-            <input v-if="showInput" type="text" v-bind:value="item.companyName">
+            <input v-if="showInput" type="text" v-model="item.companyName" v-bind:value="item.companyName">
         </td>
-        <td>{{item.lang}}</td>
-        <td>{{item.wap}}</td>
-        <td>{{item.designBy}}</td>
-        <td>{{item.price}}</td>
-        <td>{{item.program}}</td>
-        <td>{{item.info}}</td>
-        <td>{{item.uploadtest}}</td>
-        <td>{{item.upload}}</td>
+        <td>
+            <span v-if="!showInput">
+                {{item.lang}}
+            </span>
+            <input v-if="showInput" type="text" v-model="item.lang" v-bind:value="item.lang">
+        </td>
+        <td>
+            <img v-if="item.wap" src="images/right.png">
+            <img v-else src="images/error.png">
+            </td>
+        <td>
+            <span v-if="!showInput">
+                {{item.designBy}}
+            </span>
+            <input v-if="showInput" type="text" v-model="item.designBy" v-bind:value="item.designBy">
+        <td>
+            <span v-if="!showInput">
+                {{item.price}}
+            </span>
+            <input v-if="showInput" type="text" v-model="item.price" v-bind:value="item.price">
+        <td>
+            <img v-if="item.program" src="images/right.png">
+            <img v-else src="images/error.png">
+        </td>
+        <td>
+            <img v-if="item.info" src="images/right.png">
+            <img v-else src="images/error.png"></td>
+        <td>
+            <img v-if="item.uploadtest" src="images/right.png">
+            <img v-else src="images/error.png">
+        </td>
+        <td>
+            <img v-if="item.upload" src="images/right.png">
+            <img v-else src="images/error.png">
+        </td>
         <td v-on:click="option">
-            <!--<span ref="item.id" class="details">详细</span>-->
             <router-link v-bind:to="{ path: '/detail',query:{id: item.id}}">详细</router-link>
-            <span ref="item.id" class="edit">修改</span>
-            <span ref="item.id" class="del">删除</span>
+            <span ref="item.id" class="edit" id="edit" v-if="!showInput">修改</span>
+            <span class="complete" id="complete" v-else>完成</span>
+            <span ref="item.id" id="del" class="del">删除</span>
         </td>
     </tr>
 </template>
@@ -43,7 +70,6 @@ export default {
   },
   methods: {
       option: function (event) {
-          console.log(event);          
           if(event.target.className == 'edit') {
               this.showInput = true;
           }
@@ -52,6 +78,9 @@ export default {
           }
           if(event.target.className == 'details') {
               router.push({ path: 'detail',params: {id: this.myitem.id}});
+          }
+          if(event.target.className == 'complete') {
+              this.showInput = false;
           }
       },
       delEmitter: function () {
@@ -66,6 +95,9 @@ span{
 }
 td{
     text-align:center;
+}
+img{
+    width: 20px;
 }
 </style>
 
