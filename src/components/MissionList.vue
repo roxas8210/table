@@ -42,10 +42,10 @@
             <img v-else src="images/error.png">
         </td>
         <td v-on:click="option">
-            <router-link v-bind:to="{ path: '/detail',query:{id: item.id}}">详细</router-link>
-            <span ref="item.id" class="edit" id="edit" v-if="!showInput">修改</span>
-            <span class="complete" id="complete" v-else>完成</span>
-            <span ref="item.id" id="del" class="del">删除</span>
+            <span ref="item.id" class="btn btn-primary" id="edit" v-if="!showInput">修改</span>
+            <span class="btn btn-success" id="complete" v-else>完成</span>
+            <span ref="item.id" id="del" class="btn btn-danger">删除</span>
+            <router-link class="btn btn-info" v-bind:to="{ path: '/detail',query:{id: item.id}}">详细</router-link>
         </td>
     </tr>
 </template>
@@ -70,16 +70,16 @@ export default {
   },
   methods: {
       option: function (event) {
-          if(event.target.className == 'edit') {
+          if(event.target.id == 'edit') {
               this.showInput = true;
           }
-          if(event.target.className == 'del') {
+          if(event.target.id == 'del') {
               this.delEmitter();
           }
-          if(event.target.className == 'details') {
+          if(event.target.id == 'details') {
               router.push({ path: 'detail',params: {id: this.myitem.id}});
           }
-          if(event.target.className == 'complete') {
+          if(event.target.id == 'complete') {
               this.showInput = false;
           }
       },
