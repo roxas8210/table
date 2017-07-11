@@ -17,7 +17,7 @@ export default {
   },
   mounted:function () {
       var theid = this.$route.query.id;
-      axios.get('http://localhost:3000/people',{
+      axios.get('http://localhost/thinkphp/public/list/update',{
           params: {
               id: theid
           }

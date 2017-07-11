@@ -146,6 +146,7 @@ export default {
       option: function (event) {
           if(event.target.id == 'edit') {
               this.showInput = true;
+              console.log(this.item);
           }
           if(event.target.id == 'del') {
               this.delEmitter();
@@ -155,6 +156,9 @@ export default {
           }
           if(event.target.id == 'complete') {
               this.showInput = false;
+              axios.post('http://localhost/thinkphp/public/list/update',this.item).then( res => {
+                console.log(res);
+            });
           }
       },
       delEmitter: function () {

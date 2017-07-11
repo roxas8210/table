@@ -22,11 +22,11 @@
             <tr v-if="addStatus" class="row">
                  <!--公司名-->
                 <td class="col-lg-1">
-                    <input class="col-lg-12" type="text" v-model="newMission.companyName" v-bind:value="newMission.companyName">
+                    <input class="col-lg-12" type="text" v-model="newMission.companyName" >
                 </td>
                 <!--语言版本-->
                 <td class="col-lg-1">
-                    <input class="col-lg-12" type="text" v-model="newMission.lang" v-bind:value="newMission.lang">
+                    <input class="col-lg-12" type="text" v-model="newMission.lang" >
                 </td>
                 <!--是否有手机站-->
                 <td class="col-lg-1">
@@ -37,11 +37,11 @@
                 </td>
                 <!--设计师-->
                 <td class="col-lg-1">
-                    <input class="col-lg-12" type="text" v-model="newMission.designBy" v-bind:value="newMission.designBy">
+                    <input class="col-lg-12" type="text" v-model="newMission.designBy" >
                 </td>
                 <!--价格-->
                 <td class="col-lg-1">
-                    <input class="col-lg-12" type="text" v-model="newMission.price" v-bind:value="newMission.price">
+                    <input class="col-lg-12" type="text" v-model="newMission.price" >
                 </td>
                 <!--程序完成情况-->
                 <td class="col-lg-1">
@@ -94,31 +94,31 @@ export default {
             table: [],
             addStatus: false,
             newMission : {
-                companyName: '',
+                companyName: ' ',
                 lang: '中文',
                 wap: false,
-                designBy: '',
+                designBy: ' ',
                 price: 0,
                 program: false,
                 info: false,
                 uploadtest: false,
-                testaddress: '',
+                testaddress: ' ',
                 upload: false,
-                webaddress: ''
+                webaddress: ' '
             },
-            originMission : {
-                companyName: '',
-                lang: '中文',
-                wap: false,
-                designBy: '',
-                price: 0,
-                program: false,
-                info: false,
-                uploadtest: false,
-                testaddress: '',
-                upload: false,
-                webaddress: ''
-            }
+            // originMission : {
+            //     companyName: '',
+            //     lang: '中文',
+            //     wap: false,
+            //     designBy: '',
+            //     price: 0,
+            //     program: false,
+            //     info: false,
+            //     uploadtest: false,
+            //     testaddress: '',
+            //     upload: false,
+            //     webaddress: ''
+            // }
         }
     },
     components: {
@@ -137,6 +137,19 @@ export default {
             } else {
                 this.addStatus = true;   
             }
+        },
+        originMission:function() {
+            this.companyName = '';
+            this.lang = '中文';
+            this.wap = false;
+            this.designBy = '';
+            this.price = 0;
+            this.program = false;
+            this.info = false;
+            this.uploadtest = false;
+            this.testaddress = '';
+            this.upload = false;
+            this.webaddress = '';
         },
         optionStatus: function (event) {
             let result = event.target.value;
@@ -183,14 +196,16 @@ export default {
         },
         complete:function() {
             this.addStatus = false;
-            this.table.unshift(this.newMission);
-            axios.post('http://localhost:3000/people',this.newMission).then( res => {
+            this.table.push(this.newMission);
+            axios.post('http://localhost/thinkphp/public/list/add',this.newMission).then( res => {
                 console.log(res);
             });
+            let copyMission = new this.originMission();
+            this.newMission = copyMission;
         }
     },
     beforeCreate:function() {
-        axios.get('http://localhost:3000/people').then((res) => {
+        axios.get('http://localhost/thinkphp/public/list').then((res) => {
             this.table = res.data;
         });
     }
