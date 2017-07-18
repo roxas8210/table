@@ -115,7 +115,8 @@
         </td>
         <!--选项-->
         <td v-on:click="option"  class="col-lg-3">
-            <span ref="item.id" class="btn btn-primary" id="edit" v-if="!showInput">修改</span>
+            <!-- <span ref="item.id" class="btn btn-primary" id="edit" v-if="!showInput">修改</span> -->
+            <el-button ref="item.id" id="edit" v-if="!showInput">修改</el-button>
             <span class="btn btn-success" id="complete" v-else>完成</span>
             <span ref="item.id" id="del" class="btn btn-danger">删除</span>
             <router-link class="btn btn-info" v-bind:to="{ path: '/detail',query:{id: item.id}}">详细</router-link>

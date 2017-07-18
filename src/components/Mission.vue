@@ -1,7 +1,8 @@
 <template>
 <div>
     <div class="add-btn">
-        <input type="button" class="btn btn-warning" value="添加" v-on:click="add">
+        <!-- <input type="button" class="btn btn-warning" value="添加" v-on:click="add"> -->
+        <el-button type="button" value="添加" v-on:click="add">添加</el-button>
     </div>
     <table class="table table-condensed">
         <thead>
