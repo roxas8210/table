@@ -77,7 +77,7 @@
                     <span class="btn btn-success" v-on:click="complete">完成</span>
                 </td>
             </tr>
-            <tbody is="MissionList" v-for="(item,index) in table" v-bind:key="item.id" v-bind:item="item" v-bind:index="index" v-on:delEmit="del(index)"></tbody>  
+            <tbody is="MissionList" v-for="(item,index) in this.$store.state.table" v-bind:key="item.id" v-bind:item="item" v-bind:index="index" v-on:delEmit="del(index)"></tbody>  
         </tbody>
     </table>
 </div>
@@ -198,7 +198,7 @@ export default {
         complete:function() {
             this.addStatus = false;
             this.table.push(this.newMission);
-            axios.post('http://localhost/thinkphp/public/list/add',this.newMission).then( res => {
+            axios.post('http://localhost:3000/people',this.newMission).then( res => {
                 console.log(res);
             });
             let copyMission = new this.originMission();
@@ -206,8 +206,8 @@ export default {
         }
     },
     beforeCreate:function() {
-        axios.get('http://localhost/thinkphp/public/list').then((res) => {
-            this.table = res.data;
+        axios.get('http://localhost:3000/people').then((res) => {
+            this.$store.state.table = res.data;
         });
     }
 }
