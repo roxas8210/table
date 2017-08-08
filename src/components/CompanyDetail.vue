@@ -35,7 +35,6 @@
         <el-form-item label="正式网址">
             <el-input v-model="form.webaddress">
                 <template slot="prepend">http://</template>
-                <template slot="append">.com</template>
             </el-input>
         </el-form-item>
     
@@ -59,7 +58,7 @@
         
         <el-form-item label="完成日期">
             <el-col :span="10">
-                <el-date-picker type="date" placeholder="选择日期" v-model="form.createDate" style="width: 100%;"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" v-model="form.finishDate" style="width: 100%;"></el-date-picker>
             </el-col>
         </el-form-item>
         <el-form-item label="缩图" class="thumb">
@@ -77,8 +76,7 @@
 <script>
 import axios from 'axios'
 import company from '../../class/company'
-import wilddogData from '../../class/wilddogData'
-// import * as wilddog from 'wilddog'
+// import Message from 'element-ui'
 
 export default {
     name: 'CompanyDetail',
@@ -86,18 +84,33 @@ export default {
         return {
             form: {},
             fileList: [],
-            id: 0
+            companyKey: "",
+            newCompany: true
         }
     },
     methods: {
         onSubmit() {
-            console.log('submit!');
-            let theId = this.id;
-            axios.post(`http://localhost:4040/company?id=${theId}`,{
-                formData: this.form
-            }).then( res => {
-                console.log(res);
-            });
+            if(!this.newCompany) {
+                console.log('submit!');
+                axios.put(`https://vuetable.wilddogio.com/table/company/${this.companyKey}.json`,
+                    this.form
+                ).then( res => {
+                    console.log(res);
+                    if( res.status == 200 ) {
+                        this.$router.push('/');
+                    }
+                });
+            } else{
+                axios.post(`https://vuetable.wilddogio.com/table/company/${this.companyKey}.json`,
+                    this.form
+                ).then( res => {
+                    console.log(res);
+                    if( res.status == 200 ) {
+                        this.newCompany = false;
+                        this.$router.push('/');
+                    }
+                });
+            }
         },
         handlePreview() {
 
@@ -110,23 +123,21 @@ export default {
         }
     },
     mounted: function () {
-        // var config = {
-        //     syncURL: "https://vuetable.wilddogio.com"
-        // }
-        // wilddog.initializeApp(config);
-        // var ref = wilddog.sync().ref();
-        
-        if (this.$route.query.id != undefined) {
-            var theId = this.$route.query.id;
-            this.id = theId;
-            axios.get(`http://localhost:4040/company?id=${theId}`).then(res => {
+        if (this.$route.query.key != undefined) {
+            this.companyKey = this.$route.query.key;
+            this.newCompany = false;
+            axios.get(`https://vuetable.wilddogio.com/table/company/${this.companyKey}.json`).then(res => {
                 this.form = res.data;
                 console.log(res);
             });
         } else {
             let newForm = new company();
             this.form = newForm;
-            console.log('new company');
+            // let theWilddog = new wilddogData();
+            // console.log('new company');
+            // theWilddog.ref.on('value',function(snapshot,prev) {
+            //     console.log(snapshot.val());
+            // });
         }
     }
 }

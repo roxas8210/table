@@ -1,7 +1,7 @@
 <template>
     <div class="index-main">
         <el-row :gutter="20">
-            <company v-for="(item,index) in this.$store.state.table" v-bind:key="item.id" v-bind:item="item" v-bind:index="index"></company>
+            <company v-for="(item,key,index) in this.$store.state.table" v-bind:key="key" v-bind:item="item" v-bind:index="index" v-bind:myKey="key"></company>
         </el-row>
         <el-pagination layout="prev, pager, next" :total="total" :page-size="9" @current-change="handleCurrentChange">
         </el-pagination>
@@ -34,10 +34,15 @@ export default {
 
     },
     beforeCreate: function () {
-        axios.get('http://localhost:4040').then(res => {
+        axios.get('https://vuetable.wilddogio.com/table/company.json').then(res => {
             console.log(res);
-            this.total = res.data.count;
-            this.$store.state.table = res.data.data;
+            this.$store.state.table = res.data;
+        });
+    },
+    updated: function() {
+        axios.get('https://vuetable.wilddogio.com/table/company.json').then(res => {
+            console.log(res);
+            this.$store.state.table = res.data;
         });
     }
 }

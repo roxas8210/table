@@ -1,33 +1,19 @@
 function company() {
-    this.id = 0;
+    // this.id = 0;
     this.companyName = "有限公司";
-    this.logo = "";
-    this.lang = "";
+    this.logo = "有限公司";
+    this.lang = "有限公司";
     this.wap = false;
-    this.designBy = "";
+    this.designBy = "有限公司";
     this.price = 8800;
     this.program = false;
     this.info = false;
     this.uploadtest = false;
-    this.testaddress = "";
+    this.testaddress = "有限公司";
     this.upload = false;
-    this.webaddress = "";
-    this.createDate = "";
-    this.sales = "";
-    // "id": 0,
-    // "companyName": "",
-    // "logo": "",
-    // "lang": "",
-    // "wap": false,
-    // "designBy": "",
-    // "price": 8800,
-    // "program": false,
-    // "info": false,
-    // "uploadtest": false,
-    // "testaddress": "",
-    // "upload": false,
-    // "webaddress": "",
-    // "createDate": "",
-    // "sales": ""
+    this.webaddress = "有限公司";
+    this.createDate = "有限公司";
+    this.sales = "有限公司";
+    this.finishDate = "";
 };
 module.exports = company;
