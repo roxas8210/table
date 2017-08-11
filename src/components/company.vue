@@ -71,10 +71,12 @@ export default {
 .el-col p {
     font-size: 18px;
     line-height: 54px;
+    color: #444444;
 }
 
 .el-col a {
     text-decoration: none;
+    color: #444444;
 }
 </style>
 

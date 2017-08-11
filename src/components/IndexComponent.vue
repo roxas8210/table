@@ -1,7 +1,7 @@
 <template>
     <div class="index-main">
         <el-row :gutter="20">
-            <company v-for="(item,key,index) in this.$store.state.table" v-bind:key="key" v-bind:item="item" v-bind:index="index" v-bind:myKey="key"></company>
+            <company v-for="(item,key,index) in this.$store.state.table" v-bind:key="item.objectId" v-bind:item="item" v-bind:index="index" v-bind:myKey="item.objectId"></company>
         </el-row>
         <el-pagination layout="prev, pager, next" :total="total" :page-size="9" @current-change="handleCurrentChange">
         </el-pagination>
@@ -33,17 +33,31 @@ export default {
     computed: {
 
     },
-    beforeCreate: function () {
-        axios.get('https://vuetable.wilddogio.com/table/company.json').then(res => {
+    mounted: function () {
+        axios({
+            method: 'get',
+            url: 'https://api.leancloud.cn/1.1/classes/company',
+            headers: {
+                'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
+                'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
+            }
+        }).then( res => {
             console.log(res);
-            this.$store.state.table = res.data;
+            this.$store.state.table = res.data.results;
         });
     },
     updated: function() {
-        axios.get('https://vuetable.wilddogio.com/table/company.json').then(res => {
-            console.log(res);
-            this.$store.state.table = res.data;
-        });
+        // axios({
+        //     method: 'get',
+        //     url: 'https://api.leancloud.cn/1.1/classes/company',
+        //     headers: {
+        //         'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
+        //         'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
+        //     }
+        // }).then( res => {
+        //     console.log(res);
+        //     this.$store.state.table = res.data.results;
+        // });
     }
 }
 </script>

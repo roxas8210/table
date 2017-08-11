@@ -30,6 +30,10 @@ export default {
 
 </script>
 <style>
+body{
+  margin: 0;
+  padding: 0;
+}
 header{
   width: 100%;
   height: 70px;

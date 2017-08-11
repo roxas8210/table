@@ -61,12 +61,6 @@
                 <el-date-picker type="date" placeholder="选择日期" v-model="form.finishDate" style="width: 100%;"></el-date-picker>
             </el-col>
         </el-form-item>
-        <el-form-item label="缩图" class="thumb">
-            <el-upload action="https://jsonplaceholder.typicode.com/posts/" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload>
-        </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSubmit">立即创建</el-button>
             <el-button>取消</el-button>
@@ -76,7 +70,6 @@
 <script>
 import axios from 'axios'
 import company from '../../class/company'
-// import Message from 'element-ui'
 
 export default {
     name: 'CompanyDetail',
@@ -85,28 +78,47 @@ export default {
             form: {},
             fileList: [],
             companyKey: "",
-            newCompany: true
+            newCompany: true,
+            headers: {
+                'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
+                'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3'
+            }
         }
     },
     methods: {
         onSubmit() {
             if(!this.newCompany) {
                 console.log('submit!');
-                axios.put(`https://vuetable.wilddogio.com/table/company/${this.companyKey}.json`,
-                    this.form
-                ).then( res => {
+                console.log(this.form);
+                this.form['price'] = parseInt(this.form['price']);
+                axios({
+                    method: 'put',
+                    url: `https://api.leancloud.cn/1.1/classes/company/${this.companyKey}`,
+                    headers: {
+                        'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
+                        'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
+                        'Content-Type': 'application/json'
+                    },
+                    data: this.form
+                }).then( res => {
                     console.log(res);
-                    if( res.status == 200 ) {
-                        this.$router.push('/');
-                    }
+                    this.$router.push('/');
                 });
             } else{
-                axios.post(`https://vuetable.wilddogio.com/table/company/${this.companyKey}.json`,
-                    this.form
-                ).then( res => {
-                    console.log(res);
-                    if( res.status == 200 ) {
-                        this.newCompany = false;
+                console.log(this.form);
+                this.form['price'] = parseInt(this.form['price']);
+                axios({
+                    method: 'post',
+                    url: 'https://api.leancloud.cn/1.1/classes/company',
+                    headers: {
+                        'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
+                        'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
+                        'Content-Type': 'application/json'
+                    },
+                    data: this.form
+                }).then( res => {
+                    if(res.statusText == 'Created') {
+                        alert('创建成功');
                         this.$router.push('/');
                     }
                 });
@@ -126,18 +138,20 @@ export default {
         if (this.$route.query.key != undefined) {
             this.companyKey = this.$route.query.key;
             this.newCompany = false;
-            axios.get(`https://vuetable.wilddogio.com/table/company/${this.companyKey}.json`).then(res => {
-                this.form = res.data;
+            axios({
+                method: 'get',
+                url: `https://api.leancloud.cn/1.1/classes/company/${this.companyKey}`,
+                headers: {
+                    'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
+                    'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
+                },
+            }).then( res => {
                 console.log(res);
+                this.form = res.data;
             });
         } else {
             let newForm = new company();
             this.form = newForm;
-            // let theWilddog = new wilddogData();
-            // console.log('new company');
-            // theWilddog.ref.on('value',function(snapshot,prev) {
-            //     console.log(snapshot.val());
-            // });
         }
     }
 }
