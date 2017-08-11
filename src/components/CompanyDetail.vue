@@ -1,4 +1,5 @@
 <template>
+<div class="details-container">
     <el-form ref="form" :model="form" label-width="80px" label-position="left">
         <div class="title">
             <i class="el-icon-document"></i>
@@ -66,10 +67,17 @@
             <el-button>取消</el-button>
         </el-form-item>
     </el-form>
+    <div class="uploadThumb">
+        <label for="inputFile" class="sr-only">上传图片</label>
+        <input type="file" id="inputFile" v-on:change="onUpload" class="form-control" placeholder="文件" required>
+        <el-button type="primary" @click="onUpload">上传</el-button>
+    </div>
+</div>
 </template>
 <script>
 import axios from 'axios'
 import company from '../../class/company'
+import AV from '../../class/leancloud'
 
 export default {
     name: 'CompanyDetail',
@@ -132,6 +140,12 @@ export default {
         },
         program(event) {
             console.log(this.form);
+        },
+        onUpload(event) {
+            let file = event.target.files[0];
+            let name = file.name;
+            let avFile = new AV.File(name,file);
+            console.log(avFile);
         }
     },
     mounted: function () {
@@ -183,6 +197,13 @@ export default {
 }
 .el-form{
     max-width: 50%;
+    float: left;
+}
+.uploadThumb{
+    width: 50%;
+    height: auto;
+    overflow: hidden;
+    float: right;
 }
 </style>
 
