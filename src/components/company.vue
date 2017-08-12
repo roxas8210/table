@@ -1,12 +1,13 @@
 <template>
     <el-col :span="8">
-        <router-link v-bind:to="{ path: '/company',query: {key: this.myKey}}">
-            <div class="img-border">
-                <!-- <img :src="this.item.logo"> -->
-                <el-progress type="circle" :percentage="this.process" :status="this.status"></el-progress>
-            </div>
-            <p>{{this.item.companyName}}</p>
-        </router-link>
+        <div class="img-border">
+            <el-progress type="circle" :percentage="this.process" :status="this.status"></el-progress>
+        </div>
+        <div class="name">
+            <router-link v-bind:to="{ path: '/company',query: {key: this.myKey}}">
+                {{this.item.companyName}}
+            </router-link>
+        </div>
     </el-col>
 </template>
 <script>
@@ -54,11 +55,12 @@ export default {
     text-align: center;
     height: auto;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 
 .el-col .img-border {
     width: 100%;
-    height: 200px;
+    height: auto;
     overflow: hidden;
 }
 
@@ -68,10 +70,17 @@ export default {
     margin: 0 auto;
 }
 
-.el-col p {
+.el-col a {
     font-size: 18px;
     line-height: 54px;
     color: #444444;
+}
+
+.el-col .name{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    text-align: center;
 }
 
 .el-col a {

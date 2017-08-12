@@ -11,6 +11,7 @@
 <script>
 import axios from 'axios'
 import company from './company.vue'
+import CompanyModel from '../../class/CompanyModel'
 
 export default {
     name: 'IndexComponent',
@@ -34,30 +35,14 @@ export default {
 
     },
     mounted: function () {
-        axios({
-            method: 'get',
-            url: 'https://api.leancloud.cn/1.1/classes/company',
-            headers: {
-                'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
-                'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
-            }
-        }).then( res => {
+        var company = new CompanyModel();
+        company.query( res => {
             console.log(res);
-            this.$store.state.table = res.data.results;
+            this.$store.state.table = res;
         });
     },
     updated: function() {
-        // axios({
-        //     method: 'get',
-        //     url: 'https://api.leancloud.cn/1.1/classes/company',
-        //     headers: {
-        //         'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
-        //         'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
-        //     }
-        // }).then( res => {
-        //     console.log(res);
-        //     this.$store.state.table = res.data.results;
-        // });
+        
     }
 }
 </script>

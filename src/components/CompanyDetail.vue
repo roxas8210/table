@@ -12,7 +12,7 @@
             <el-input v-model="form.sales"></el-input>
         </el-form-item>
         <el-form-item label="下单日期">
-            <el-col :span="10">
+            <el-col :span="20">
                 <el-date-picker type="date" placeholder="选择日期" v-model="form.createDate" style="width: 100%;"></el-date-picker>
             </el-col>
         </el-form-item>
@@ -58,7 +58,7 @@
         </el-form-item>
         
         <el-form-item label="完成日期">
-            <el-col :span="10">
+            <el-col :span="20">
                 <el-date-picker type="date" placeholder="选择日期" v-model="form.finishDate" style="width: 100%;"></el-date-picker>
             </el-col>
         </el-form-item>
@@ -70,7 +70,7 @@
     <div class="uploadThumb">
         <label for="inputFile" class="sr-only">上传图片</label>
         <input type="file" id="inputFile" v-on:change="onUpload" class="form-control" placeholder="文件" required>
-        <el-button type="primary" @click="onUpload">上传</el-button>
+        <img :src="form.logo">
     </div>
 </div>
 </template>
@@ -78,6 +78,7 @@
 import axios from 'axios'
 import company from '../../class/company'
 import AV from '../../class/leancloud'
+import CompanyModel from '../../class/CompanyModel'
 
 export default {
     name: 'CompanyDetail',
@@ -90,45 +91,31 @@ export default {
             headers: {
                 'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
                 'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3'
-            }
+            },
+            thumb: ""
         }
     },
     methods: {
         onSubmit() {
+            var company = new CompanyModel();
             if(!this.newCompany) {
                 console.log('submit!');
                 console.log(this.form);
                 this.form['price'] = parseInt(this.form['price']);
-                axios({
-                    method: 'put',
-                    url: `https://api.leancloud.cn/1.1/classes/company/${this.companyKey}`,
-                    headers: {
-                        'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
-                        'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
-                        'Content-Type': 'application/json'
-                    },
-                    data: this.form
-                }).then( res => {
+                company.update(this.companyKey,this.form, res => {
                     console.log(res);
-                    this.$router.push('/');
+                    if(res.updatedAt) {
+                        alert('更新成功');
+                        this.$router.push('/');
+                    }
                 });
             } else{
                 console.log(this.form);
                 this.form['price'] = parseInt(this.form['price']);
-                axios({
-                    method: 'post',
-                    url: 'https://api.leancloud.cn/1.1/classes/company',
-                    headers: {
-                        'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
-                        'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
-                        'Content-Type': 'application/json'
-                    },
-                    data: this.form
-                }).then( res => {
-                    if(res.statusText == 'Created') {
-                        alert('创建成功');
-                        this.$router.push('/');
-                    }
+                company.insertCompany(this.form, res => {
+                    console.log(res);
+                    alert('创建成功');
+                    this.$router.push('/');
                 });
             }
         },
@@ -145,23 +132,23 @@ export default {
             let file = event.target.files[0];
             let name = file.name;
             let avFile = new AV.File(name,file);
-            console.log(avFile);
+            avFile.save().then( res => {
+                console.log(res);
+                this.form.logo = res.attributes.url;
+                if(res.id) {
+                    alert('上传成功');
+                }
+            });
         }
     },
     mounted: function () {
         if (this.$route.query.key != undefined) {
             this.companyKey = this.$route.query.key;
             this.newCompany = false;
-            axios({
-                method: 'get',
-                url: `https://api.leancloud.cn/1.1/classes/company/${this.companyKey}`,
-                headers: {
-                    'X-LC-Id': 'qGOBof4CmqXzgG91fjM6d1TJ-gzGzoHsz',
-                    'X-LC-Key': '8JzRYWYugrTDC4phdOPCqhB3',
-                },
-            }).then( res => {
+            var company = new CompanyModel();
+            company.get(this.companyKey, res => {
                 console.log(res);
-                this.form = res.data;
+                this.form = res;
             });
         } else {
             let newForm = new company();
@@ -204,6 +191,10 @@ export default {
     height: auto;
     overflow: hidden;
     float: right;
+}
+.uploadThumb img{
+    margin-top: 20px;
+    width: 100%;
 }
 </style>
 
