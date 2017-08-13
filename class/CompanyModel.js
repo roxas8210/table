@@ -57,4 +57,27 @@ CompanyModel.prototype.update = function(id,dataObj,success,fail) {
     AV.Object.saveAll(companyUpdate).then(success,fail);
 }
 
+//获取数据总数
+CompanyModel.prototype.count = function(success,fail) {
+    var query = new AV.Query('company');
+    query.find();
+    query.count().then(success,fail);
+}
+
+//查询分页
+CompanyModel.prototype.queryPage = function(pagesize,page,success,fail) {
+    var query = new AV.Query('company');
+    let skipNum = ( page - 1 ) * pagesize;
+    query.skip(skipNum);
+    query.limit(pagesize);
+    query.find().then(res => {
+        var queryData = new Array();
+        res.map((element,index) => {
+            element.attributes.objectId = element.id;
+            queryData.push(element.attributes);
+        });
+        success(queryData);
+    },fail);
+}
+
 module.exports = CompanyModel;
